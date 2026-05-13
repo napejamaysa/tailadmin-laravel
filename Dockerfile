@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    nginx \
     && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
@@ -22,11 +23,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-COPY . . 
+COPY . .
 
 RUN chmod +x install.sh && bash ./install.sh
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 EXPOSE 8090
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8090"]npm
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8090"]
