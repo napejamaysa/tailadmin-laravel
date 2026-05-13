@@ -40,3 +40,20 @@ jobs:
         run: docker compose up -d
       - name: Check container status
         run: docker ps
+  deploy-social-media:
+    needs: build-push-image
+    runs-on: self-hosted
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Stop and remove existing container
+      run: |
+        docker-compose down 2>/dev/null || true
+        docker stop tailadmin-laravel 2>/dev/null || true
+        docker rm tailadmin-laravel 2>/dev/null || true
+    - name: Remove old images
+      run: docker system prune -f
+    - name: Start container
+      run: docker-compose up -d
+    - name: Check container status
+      run: docker ps
