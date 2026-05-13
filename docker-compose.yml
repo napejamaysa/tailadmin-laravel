@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   web:
-    image: myzzayuuu/tailadmin-laravel:beta
+    image: ${{ secrets.DOCKER_USER }}/tailadmin-laravel:beta
     ports:
       - "8090:8090"
     depends_on:

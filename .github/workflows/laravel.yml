@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  IMAGE_NAME: "myzzayuuu/tailadmin-laravel:beta"
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/tailadmin-laravel:beta
 jobs:
   build-push-image:
     runs-on: ubuntu-latest
