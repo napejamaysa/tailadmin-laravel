@@ -5,13 +5,15 @@ on:
     branches:
       - main
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/tailadmin-laravel:beta
+  IMAGE_NAME: myzzayuuu/tailadmin-laravel:beta
 jobs:
   build-push-image:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+      - name: Debug image name
+        run: echo "IMAGE_NAME = $IMAGE_NAME"
       - name: Build Image
         run: docker build -t $IMAGE_NAME .
       - name: List Image
@@ -19,7 +21,7 @@ jobs:
       - name: Login to Docker Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USER }}
+          username: myzzayuuu
           password: ${{ secrets.DOCKER_PASS }}
       - name: Push Image
         run: docker push $IMAGE_NAME
@@ -33,8 +35,8 @@ jobs:
       - name: Stop and remove existing container
         run: docker compose down
       - name: Remove old images
-        run: |
-          docker compose down
-          docker system prune -f
+        run: docker system prune -f
       - name: Start container
         run: docker compose up -d
+      - name: Check container status
+        run: docker ps
