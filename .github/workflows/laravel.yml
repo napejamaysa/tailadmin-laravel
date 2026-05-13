@@ -30,8 +30,9 @@ jobs:
     needs: build-push-image
     runs-on: self-hosted
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u myzzayuuu --password-stdin
     - name: Stop and remove existing container
       run: |
         docker-compose down 2>/dev/null || true
@@ -39,6 +40,8 @@ jobs:
         docker rm tailadmin-laravel 2>/dev/null || true
     - name: Remove old images
       run: docker system prune -f
+    - name: Pull images
+      run: docker-compose pull
     - name: Start container
       run: docker-compose up -d
     - name: Check container status
